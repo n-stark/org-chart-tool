@@ -148,6 +148,82 @@
             min-height: 100%;
         }
 
+        /* Print styles */
+        @media print {
+            @page {
+                margin: 0.3in;
+                size: landscape;
+            }
+            
+            /* Hide all page elements */
+            .header,
+            .upload-section,
+            .legend {
+                display: none !important;
+            }
+            
+            /* Make chart container fill the page and show everything */
+            .container {
+                max-width: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                box-shadow: none !important;
+                border-radius: 0 !important;
+                background: white !important;
+                height: auto !important;
+            }
+            
+            .chart-container {
+                height: auto !important;
+                max-height: none !important;
+                overflow: visible !important;
+                border: none !important;
+                border-radius: 0 !important;
+                padding: 10px !important;
+                margin: 0 !important;
+                width: 100% !important;
+                position: relative !important;
+            }
+            
+            /* Force SVG to show completely and scale down if needed */
+            #chart {
+                width: auto !important;
+                height: auto !important;
+                max-width: 100% !important;
+                max-height: 100% !important;
+                transform-origin: top left !important;
+                transform: scale(0.8) !important;
+            }
+            
+            /* Ensure text is readable */
+            .node text {
+                font-size: 11px !important;
+                fill: black !important;
+            }
+            
+            .node .name {
+                font-size: 13px !important;
+                font-weight: bold !important;
+            }
+            
+            /* Clean up lines for print */
+            .link {
+                stroke: black !important;
+                stroke-width: 1px !important;
+            }
+            
+            .node rect {
+                stroke: black !important;
+                stroke-width: 1px !important;
+                fill: white !important;
+            }
+            
+            /* Hide interactive elements */
+            .expand-icon {
+                display: none !important;
+            }
+        }
+
         .node {
             cursor: pointer;
             transition: opacity 0.3s ease;
@@ -259,7 +335,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🏢 Org Chart Generator v2</h1>
+            <h1>🏢 Org Chart Generator</h1>
             <p>Upload your CSV file to create a beautiful organizational chart</p>
         </div>
 
@@ -288,6 +364,9 @@
             <div class="legend-item" style="color: #6b7280; font-size: 0.9rem;">
                 💡 Click nodes with + or − to expand/collapse teams
             </div>
+            <div class="legend-item" style="color: #6b7280; font-size: 0.9rem;">
+                🖨️ Press Ctrl+P (Cmd+P on Mac) to print just the org chart
+            </div>
         </div>
 
         <div class="chart-container">
@@ -296,8 +375,6 @@
     </div>
 
     <script>
-        console.log('🎉 NEW ARTIFACT VERSION LOADED 🎉');
-        
         let orgData = [];
         
         // File upload handling
